@@ -1,0 +1,20 @@
+__pycache__/
+.vscode/
+mshoot.egg-info/
+examples/out/
+.spyproject/
+iterate.dat
+examples/out/
+.ipynb_checkpoints/
+dist/
+build/
+*.pyc
+*.log
+*_log.txt
+*_result.txt
+status
+success
+volta/
+
+# Scripts fetching data from SDU's internal databases
+fetch_from_volta.py
