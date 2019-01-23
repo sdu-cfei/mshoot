@@ -258,20 +258,25 @@ fig.savefig('examples/bs2019/figs/case1_horizon_tol_1e-11.pdf')
 
 #%% Computational time
 
-# FMU
+# FMU 1e-11
 wd1 = 'examples/bs2019/case1/results/mpc/r1c1_dymola_1e-11/'
 
+# FMU 1e-9
+wd2 = 'examples/bs2019/case1/results/mpc/r1c1_dymola_1e-9/'
+
 # SVM
-wd2 = 'examples/bs2019/case2/results/mpc-lin/'
+wd3 = 'examples/bs2019/case2/results/mpc-lin/'
 
 hdirs1 = [x[0].split('/')[-1] for x in os.walk(wd1)][1:]
 hdirs2 = [x[0].split('/')[-1] for x in os.walk(wd2)][1:]
+hdirs3 = [x[0].split('/')[-1] for x in os.walk(wd3)][1:]
 
 hix = [int(x[1:]) for x in hdirs1]
 hix = sorted(hix)
 
 ct1 = list()
 ct2 = list()
+ct3 = list()
 
 # Number of optimization variables
 nv = [x * 2 for x in hix]
@@ -289,12 +294,18 @@ for h in hix:
         s = f.read().split(' ')
         x = int(s[-2])
         ct2.append(x / 60.)
+    
+    with open(wd3 + "h" + str(h) + '/cputime.txt') as f:
+        s = f.read().split(' ')
+        x = int(s[-2])
+        ct3.append(x / 60.)
 
 fig, ax = plt.subplots(1, 1, figsize=(5,3))
 fig.set_dpi(120)
 
 plt.plot(oh, ct1, marker='s', c='k', ls=':', lw=1., label='R1C1 FMU (tol=1e-11)')
-plt.plot(oh, ct2, marker='v', c='r', ls=':', lw=1., label='SVR')
+plt.plot(oh, ct2, marker='o', c='b', ls=':', lw=1., label='R1C1 FMU (tol=1e-9)')
+plt.plot(oh, ct3, marker='v', c='r', ls=':', lw=1., label='SVR')
 
 ax.set_xlabel('Optimization horizon [h]')
 ax.set_ylabel('Total CPU time [min]')
