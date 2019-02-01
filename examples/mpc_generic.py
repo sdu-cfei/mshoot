@@ -1,12 +1,10 @@
 """
-This script runs an MPC example using:
-- an state-space model for emulation,
-- the same model for control.
-
-Author: K. Arendt
-Date: Sep 2018
+Type: MPC example
+Control model: generic (state-space R3C3)
+Emulation model: generic (state-space R3C3)
+Inputs: same for control and emulation
+Objective: minimize cost
 """
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -114,7 +112,8 @@ horizon = 6
 t0 = time.time()
 u, xctr, xemu, yemu, u_hist = mpc.optimize(
     model=model,
-    inp=data[['Tout', 'Hglo', 'qhvac', 'nocc', 'price']],
+    inp_ctr=data[['Tout', 'Hglo', 'qhvac', 'nocc', 'price']],
+    inp_emu=data[['Tout', 'Hglo', 'qhvac', 'nocc', 'price']],
     free=['qhvac'],
     ubounds=[(0., 5000.)],
     xbounds=[(data['Tlo'].values, data['Thi'].values), (0, 50.), (0, 50.)],

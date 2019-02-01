@@ -1,13 +1,19 @@
 """
-This example shows what happens if a model with two states is used
+Type: MPC example
+Control model: R2C2 FMU (only 1 monitored state)
+Emulation model: R2C2 FMU (only 1 monitored state)
+Inputs: same for control and emulation
+Objective: minimize energy
+
+Additional info:
+================
+In this example a model with two states is used
 for emulation, but only one state is monitored. Due to one unknown
-state the control model diverges from the emulation model. In effect,
-the initial condition becomes infeasible.
-
-This problem is solved by autorelaxing state constraints, whenever
-initial state is infeasible.
+state there is a model mismatch and the control model tends to diverge
+from the emulation model, effectively violating the state constraint.
+This problem is handled by autorelaxing state constraints
+whenever initial state is infeasible.
 """
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -94,7 +100,8 @@ horizon = 6
 t0 = time.time()
 u, xctr, xemu, yemu, u_hist = mpc.optimize(
     model=model_ctr,
-    inp=data[['q', 'Tout']],
+    inp_ctr=data[['q', 'Tout']],
+    inp_emu=data[['q', 'Tout']],
     free=['q'],
     ubounds=[(0., 5000.)],
     xbounds=[(data['Tlo'].values, data['Thi'].values)],

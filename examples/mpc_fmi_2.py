@@ -1,12 +1,10 @@
 """
-This script runs an MPC example using:
-- an FMI model (R2C2) for emulation,
-- the same FMI model for control,
-
-Author: K. Arendt
-Date: Sep 2018
+Type: MPC example
+Control model: R2C2 FMU
+Emulation model: R2C2 FMU
+Inputs: same for control and emulation
+Objective: minimize energy
 """
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -92,7 +90,8 @@ horizon = 6
 t0 = time.time()
 u, xctr, xemu, yemu, u_hist = mpc.optimize(
     model=model_ctr,
-    inp=data[['q', 'Tout']],
+    inp_ctr=data[['q', 'Tout']],
+    inp_emu=data[['q', 'Tout']],
     free=['q'],
     ubounds=[(0., 20000.)],
     xbounds=[(data['Tlo'].values, data['Thi'].values),

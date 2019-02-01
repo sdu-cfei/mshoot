@@ -210,7 +210,8 @@ for hrz in horizons:
         t0 = time.time()
         u, xctr, xemu, yemu, u_hist = mpc.optimize(
             model=model_ctr,
-            inp=inp_mpc,
+            inp_ctr=inp_mpc.copy(),
+            inp_emu=inp_mpc.copy(),
             free=['vpos'],
             ubounds=[(-100., 100.)],
             xbounds=[(Tmin, Tmax)],

@@ -1,10 +1,8 @@
 """
 This script runs a multiple-shooting optimization using a scikit model.
 
-Author: K. Arendt
-Date: Sep 2018
+Objective: minimize energy consumption.
 """
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
