@@ -3,9 +3,6 @@ This script runs a multiple shooting example using
 an FMI model (R1C1).
 
 Objective: minimize energy consumption.
-
-Author: K. Arendt
-Date: Sep 2018
 """
 
 import os
@@ -74,7 +71,7 @@ print(udf)
 print(xdf)
 
 ax = udf.plot(title='udf')
-ax.set_ylim(0, 4000)
+ax.set_ylim(0, 4100)
 ax = xdf.plot(title='xdf')
-ax.set_ylim(293.15, 296.15)
+ax.set_ylim(292.15, 296.15)
 plt.show()

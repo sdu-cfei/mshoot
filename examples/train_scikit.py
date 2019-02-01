@@ -1,10 +1,6 @@
 """
 This script shows how to fit a scikit model to a state-space model.
-
-Author: K. Arendt
-Date: Sep 2018
 """
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt

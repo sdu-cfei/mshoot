@@ -3,9 +3,6 @@ This script runs a multiple shooting example using
 an FMI model (R2C2).
 
 Objective: minimize energy consumption.
-
-Author: K. Arendt
-Date: Sep 2018
 """
 
 import os

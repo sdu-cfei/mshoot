@@ -113,7 +113,8 @@ for fmu in fmus:
             t0 = time.time()
             u, xctr, xemu, yemu, u_hist = mpc.optimize(
                 model=model_ctr,
-                inp=inp,
+                inp_ctr=inp.copy(),
+                inp_emu=inp.copy(),
                 free=['vpos'],
                 ubounds=[(-100., 100.)],
                 xbounds=[(Tmin, Tmax)],

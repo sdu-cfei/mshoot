@@ -54,7 +54,8 @@ class TestMPC(unittest.TestCase):
 
         u, xctr, xemu, yemu, uhist = mpc.optimize(
             model=self.model,
-            inp=inp,
+            inp_ctr=inp.copy(),
+            inp_emu=inp.copy(),
             free=['q'],
             ubounds=ubounds,
             xbounds=xbounds,

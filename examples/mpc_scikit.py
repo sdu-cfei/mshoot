@@ -1,12 +1,10 @@
 """
-This script runs an MPC example using:
-- a scikit model for control,
-- a state-space model for emulation.
-
-Author: K. Arendt
-Date: Sep 2018
+Type: MPC example
+Control model: scikit (SVM)
+Emulation model: generic (state-space R3C3)
+Inputs: same for control and emulation
+Objective: minimize energy
 """
-
 import time
 import os
 import pandas as pd
@@ -173,7 +171,8 @@ horizon = 6
 t0 = time.time()
 u, xctr, xemu, yemu, u_hist = mpc.optimize(
     model=ml,
-    inp=uvalid,
+    inp_ctr=uvalid,
+    inp_emu=uvalid,
     free=['qhvac'],
     ubounds=[(0., 5000.)],
     xbounds=[(Tr_lo, 30.), (0, 50.), (0, 50.)],

@@ -42,11 +42,14 @@ class MPCEmulation():
 
         pd.set_option('display.max_columns', 50)
 
-    def optimize(self, model, inp, free, ubounds, xbounds,
+    def optimize(self, model, inp_ctr, inp_emu, free, ubounds, xbounds,
                  x0, ynominal=None, maxiter=50,
                  step=1, horizon=10):
         """
         Optimize problem using progressive multiple shooting optimizations.
+
+        `inp_ctr` and `inp_emu` have to have the same index (control
+        and emulation inputs need to be aligned).
 
         Return:
         - u - DataFrame, optimal free inputs
@@ -56,7 +59,8 @@ class MPCEmulation():
         - uhist - list of DataFrames, optimal free inputs per MPC interval
 
         :param model: SimModel, control model
-        :param inp: DataFrame, fixed inputs, index with time
+        :param inp_ctr: DataFrame, fixed inputs for control model, index with time
+        :param inp_emu: DataFrame, fixed inputs for emulation model, index with time
         :param free: list, names of free inputs
         :param ubounds: list of tuples of floats, free input bounds
         :param xbounds: list of tuples of vectors, state bounds
@@ -79,16 +83,22 @@ class MPCEmulation():
         x0 = np.array(x0).astype(float)
 
         # Assert index type is int
-        inp.index = inp.index.astype(int)
+        inp_ctr.index = inp_ctr.index.astype(int)
+        inp_emu.index = inp_emu.index.astype(int)
 
-        t = inp.index[0]  # Current time
+        # Assert control and emulation input indexes as the same
+        assert np.isclose(inp_ctr.index.values, inp_emu.index.values).all(), \
+            "Control and emulation input indexes are not equal!"
+
+        # Initialize optimal free inputs u (to be returned)
+        t = inp_emu.index[0]  # Current time
         u = pd.DataFrame(
-            index=inp.index,
+            index=inp_emu.index,
             columns=free,
-            data=np.zeros((inp.index.size, len(free))))  # Optimal free inputs
-        xemu = pd.DataFrame(index=inp.index)  # Emulation states
-        yemu = pd.DataFrame(index=inp.index)  # Emulation outputs
-        xctr = pd.DataFrame(index=inp.index)  # Control states
+            data=np.zeros((inp_emu.index.size, len(free))))  # Optimal free inputs
+        xemu = pd.DataFrame(index=inp_emu.index)  # Emulation states
+        yemu = pd.DataFrame(index=inp_emu.index)  # Emulation outputs
+        xctr = pd.DataFrame(index=inp_emu.index)  # Control states
         uhist = list()  # List of optimal solutions from all intervals
 
         # Extend bounds if given as floats
@@ -98,7 +108,7 @@ class MPCEmulation():
             newxb = list()
             for b in xb:
                 if isinstance(b, float) or isinstance(b, int):
-                    newxb.append(np.full(inp.index.size, b))
+                    newxb.append(np.full(inp_emu.index.size, b))
                 else:
                     newxb.append(b)
             xbounds[i] = newxb
@@ -109,32 +119,36 @@ class MPCEmulation():
         # Start MPC loops
         i = 0
         dt = 0
-        while (i + horizon <= inp.index.size):
+        while (i + horizon <= inp_emu.index.size):
             self.log.debug("Current MPC time: {} s".format(t))
-            print("Progress: {:.1f}%".format(float(i) / inp.index.size * 100.))  # TODO: To log
+            print("Progress: {:.1f}%".format(float(i) / inp_emu.index.size * 100.))  # TODO: To log
             # Calculate MPC re-run time step
-            dt = inp.index[i+step] - inp.index[i]
+            dt = inp_emu.index[i+step] - inp_emu.index[i]
 
             # Define inputs for next period
-            nxt_inp = inp.iloc[i:i+horizon+1].copy()
+            nxt_inp_ctr = inp_ctr.iloc[i:i+horizon+1].copy()
+            nxt_inp_emu = inp_emu.iloc[i:i+horizon+1].copy()
+
             nxt_xbounds = [
                 (b[0][i:i+horizon+1], b[1][i:i+horizon+1]) for b in xbounds
             ]
+
             if i == 0:
                 nxt_x0 = x0
             else:
                 nxt_x0 = xemu.iloc[i].values
-            uguess = u.loc[nxt_inp.index].iloc[:-1].values  # One element shorter than inp
 
-            self.log.debug("Next inputs:\n{}".format(nxt_inp))
-            self.log.debug("Next xbounds:\n{}".format(nxt_xbounds))
-            self.log.debug("Next x0:\n{}".format(nxt_x0))
-            self.log.debug("Next uguess:\n{}".format(uguess))
+            uguess = u.loc[nxt_inp_ctr.index].iloc[:-1].values  # One element shorter than inp
+
+            self.log.debug("nxt_inp_ctr:\n{}".format(nxt_inp_ctr))
+            self.log.debug("nxt_xbounds:\n{}".format(nxt_xbounds))
+            self.log.debug("next_x0:\n{}".format(nxt_x0))
+            self.log.debug("uguess:\n{}".format(uguess))
 
             # Optimize
             udf, xdf = ms.optimize(
                 model=model,
-                inp=nxt_inp,
+                inp=nxt_inp_ctr,
                 free=free,
                 ubounds=ubounds,
                 xbounds=nxt_xbounds,
@@ -163,25 +177,27 @@ class MPCEmulation():
             xctr.loc[xdf.index] = xdf.copy()
 
             # Progress emulation by `step`
-            nxt_inp.loc[udf.index, free] = udf[free].copy()
-            nxt_inp = nxt_inp.dropna()  # Last row of free inp is NaN
+            nxt_inp_emu.loc[udf.index, free] = udf[free].copy()
+            nxt_inp_emu = nxt_inp_emu.dropna()  # Last row of free inp is NaN
+
             self.log.debug(
                 "Progress emulation with...\n"
-                "nxt_inp=\n{}\n"
-                "nxt_x0=\n{}\n".format(nxt_inp, nxt_x0)
+                "nxt_inp_emu=\n{}\n"
+                "nxt_x0=\n{}\n".format(nxt_inp_emu, nxt_x0)
             )
-            ey, ex = self.emumod.simulate(nxt_inp, nxt_x0, save_state=True)
+            ey, ex = self.emumod.simulate(nxt_inp_emu, nxt_x0, save_state=True)
 
-            # ...or re-simulate entire period each time
-            # inp.loc[udf.index, free] = udf[free].copy()
-            # ey, ex = self.emumod.simulate(inp, x0)
-
+            # Assert index type is int
+            # (mshoot doesn't have control over the model implementation)
             ey.index = ey.index.astype(int)  # Assert index type is int
             ex.index = ex.index.astype(int)  # Assert index type is int
+
+            # TODO: Figure out why the following is needed
             if len(xemu.columns) == 0:
                 # Add columns
                 for c in ex.columns:
                     xemu[c] = np.nan
+
             if len(yemu.columns) == 0:
                 # Add columns
                 for c in ey.columns:
