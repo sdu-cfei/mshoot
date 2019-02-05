@@ -6,6 +6,6 @@ Documentation: https://sdu-cfei.github.io/mshoot/
 
 <br>
 
-![Architecture](/docs/gfx/architecture.png)
+![Architecture](/docs/_images/architecture.png)
 
 
