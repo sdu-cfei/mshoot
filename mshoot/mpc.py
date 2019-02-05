@@ -10,7 +10,7 @@ from mshoot.mshoot import MShoot
 
 class MPCEmulation():
     """
-    MPC emulation is used to test the MPC strategy in a simulated
+    MPC emulation is used to test an MPC strategy in a simulated
     environment. Two models are required: (1) control model,
     (2) emulation model.
 
@@ -20,11 +20,12 @@ class MPCEmulation():
     The cost function should return a scalar and have
     the following signature:
 
-    ```
+    .. code::
+
         def cost(xdf, ydf):
             # user code here
             return cost
-    ```
+
 
     where xdf is the state data frame and ydf is the output
     data frame.
@@ -52,6 +53,7 @@ class MPCEmulation():
         and emulation inputs need to be aligned).
 
         Return:
+
         - u - DataFrame, optimal free inputs
         - xctr - DataFrame, control states
         - xemu - DataFrame, emulation states

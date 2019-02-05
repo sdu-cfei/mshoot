@@ -13,7 +13,9 @@ from mshoot.optimize import optimize
 
 
 class SimModel(abc.ABC):
-    """MShoot statefull model interface."""
+    """
+    MShoot statefull model interface.
+    """
 
     @abc.abstractmethod
     def simulate(self, udf, x0, **kwargs):
@@ -22,6 +24,7 @@ class SimModel(abc.ABC):
         and initial state `x0`.
 
         The DataFrame should have the following content:
+
         - index - time in seconds and equal steps,
         - columns - input data,
         - column names - input variable names.
@@ -32,7 +35,7 @@ class SimModel(abc.ABC):
 
         :param udf: DataFrame, shape (n_steps, n_variables)
         :param x0: vector, size (n_states, )
-        :param **kwargs: Additional arguments required by some interfaces
+        :param \*\*kwargs: Additional arguments required by some interfaces
         :return: ydf, xdf
         """
         pass

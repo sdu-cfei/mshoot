@@ -23,21 +23,24 @@ class SimScikit(SimModel):
     for Scikit-Learn models, covering model instantiation, training,
     and prediction (simulation). In addition, the selected ML model is
     turned into a dynamic model by:
+
     - predicting the time derivative of the state,
     - running a model in a time loop, at each step predicting one-step ahead,
     - using the time-backshifted output as one of the predictors.
 
     The way this class should be used is as follows:
+
     1. Select the model type with __init__(...)
     2. Train the model with train(...)
     3. Simulate with simulate(...)
 
-    TODO: Linear interpolation between time steps -> 0.5 * (feat[i-1] + feat[i])
-          (currently x[i] is calculated based on x[i-1], dt[i], and feat[i] only)
+    .. note::
+        TODO: Linear interpolation between time steps -> 0.5 * (feat[i-1] + feat[i])
+        (currently x[i] is calculated based on x[i-1], dt[i], and feat[i] only)
 
     :param model: str, Scikit-Learn regression model type
     :param use_state: bool, If True, state is included in the features
-    :param **args: Optional arguments to be passed to a sklearn model
+    :param \*\*args: Optional arguments to be passed to a sklearn model
     """
     def __init__(self, model="Linear", use_state=False, **args):
         self.labels = list()     # Model output names
@@ -140,6 +143,7 @@ class SimScikit(SimModel):
         and initial state `x0`.
 
         The DataFrame should have the following content:
+
         - index - time in seconds and equal steps, named 'time',
         - columns - input data,
         - column names - input variable names.

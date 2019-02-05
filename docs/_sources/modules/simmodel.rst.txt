@@ -1,0 +1,8 @@
+.. _SimModel:
+
+SimModel
+============
+
+.. autoclass:: mshoot.SimModel
+    :members:
+    :show-inheritance:

@@ -1,0 +1,387 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Simulation interfaces &mdash; mshoot 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="MShoot" href="mshoot.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> mshoot
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="mpcemulation.html">MPCEmulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mshoot.html">MShoot</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Simulation interfaces</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">mshoot</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../api.html">API documentation</a> &raquo;</li>
+        
+      <li>Simulation interfaces</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/modules/interfaces.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="simulation-interfaces">
+<span id="simmodel"></span><h1>Simulation interfaces<a class="headerlink" href="#simulation-interfaces" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="mshoot.SimModel">
+<em class="property">class </em><code class="descclassname">mshoot.</code><code class="descname">SimModel</code><a class="headerlink" href="#mshoot.SimModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>MShoot statefull model interface.</p>
+<dl class="method">
+<dt id="mshoot.SimModel.simulate">
+<code class="descname">simulate</code><span class="sig-paren">(</span><em>udf</em>, <em>x0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#mshoot.SimModel.simulate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulate the model using the provided inputs <cite>udf</cite>
+and initial state <cite>x0</cite>.</p>
+<p>The DataFrame should have the following content:</p>
+<ul class="simple">
+<li>index - time in seconds and equal steps,</li>
+<li>columns - input data,</li>
+<li>column names - input variable names.</li>
+</ul>
+<p>Return two DataFrames, <cite>ydf</cite> and <cite>xdf</cite>, with
+outputs and states, respectively, and with the same
+structure as <cite>udf</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>udf</strong> – DataFrame, shape (n_steps, n_variables)</li>
+<li><strong>x0</strong> – vector, size (n_states, )</li>
+<li><strong>**kwargs</strong> – Additional arguments required by some interfaces</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">ydf, xdf</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mshoot.SimFMU">
+<em class="property">class </em><code class="descclassname">mshoot.</code><code class="descname">SimFMU</code><span class="sig-paren">(</span><em>fmupath</em>, <em>outputs=[]</em>, <em>states=[]</em>, <em>parameters={}</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="headerlink" href="#mshoot.SimFMU" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">mshoot.mshoot.SimModel</span></code></p>
+<dl class="method">
+<dt id="mshoot.SimFMU.simulate">
+<code class="descname">simulate</code><span class="sig-paren">(</span><em>udf</em>, <em>x0</em>, <em>save_state=False</em><span class="sig-paren">)</span><a class="headerlink" href="#mshoot.SimFMU.simulate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulate the model using the provided inputs <cite>udf</cite>
+and initial state <cite>x0</cite>.</p>
+<p>The DataFrame should have the following content:</p>
+<ul class="simple">
+<li>index - time in seconds and equal steps, named ‘time’,</li>
+<li>columns - input data,</li>
+<li>column names - input variable names.</li>
+</ul>
+<p>The order of <cite>x0</cite> should reflect the one used in <cite>states</cite>.</p>
+<p>Return two DataFrames, <cite>ydf</cite> and <cite>xdf</cite>, with
+outputs and states, respectively, and with the same
+structure as <cite>udf</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>udf</strong> – DataFrame, shape (n_steps, n_variables)</li>
+<li><strong>x0</strong> – vector, size (n_states, )</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">ydf, xdf</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mshoot.SimScikit">
+<em class="property">class </em><code class="descclassname">mshoot.</code><code class="descname">SimScikit</code><span class="sig-paren">(</span><em>model='Linear'</em>, <em>use_state=False</em>, <em>**args</em><span class="sig-paren">)</span><a class="headerlink" href="#mshoot.SimScikit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">mshoot.mshoot.SimModel</span></code></p>
+<p>Unlike other interface classes (e.g. SimFMU) which are simple wrappers
+for the existing models, SimScikit works more like an automation layer
+for Scikit-Learn models, covering model instantiation, training,
+and prediction (simulation). In addition, the selected ML model is
+turned into a dynamic model by:</p>
+<ul class="simple">
+<li>predicting the time derivative of the state,</li>
+<li>running a model in a time loop, at each step predicting one-step ahead,</li>
+<li>using the time-backshifted output as one of the predictors.</li>
+</ul>
+<p>The way this class should be used is as follows:</p>
+<ol class="arabic simple">
+<li>Select the model type with __init__(…)</li>
+<li>Train the model with train(…)</li>
+<li>Simulate with simulate(…)</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">TODO: Linear interpolation between time steps -&gt; 0.5 * (feat[i-1] + feat[i])
+(currently x[i] is calculated based on x[i-1], dt[i], and feat[i] only)</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>model</strong> – str, Scikit-Learn regression model type</li>
+<li><strong>use_state</strong> – bool, If True, state is included in the features</li>
+<li><strong>**args</strong> – Optional arguments to be passed to a sklearn model</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mshoot.SimScikit.simulate">
+<code class="descname">simulate</code><span class="sig-paren">(</span><em>udf</em>, <em>x0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#mshoot.SimScikit.simulate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulate the model using the provided inputs <cite>udf</cite>
+and initial state <cite>x0</cite>.</p>
+<p>The DataFrame should have the following content:</p>
+<ul class="simple">
+<li>index - time in seconds and equal steps, named ‘time’,</li>
+<li>columns - input data,</li>
+<li>column names - input variable names.</li>
+</ul>
+<p>The order of <cite>x0</cite> should reflect the one used in <cite>states</cite>.</p>
+<p>Return two DataFrames, <cite>ydf</cite> and <cite>xdf</cite>, with
+outputs and states, respectively, and with the same
+structure as <cite>udf</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>udf</strong> – DataFrame, shape (n_variables, n_steps)</li>
+<li><strong>x0</strong> – vector, size (n_states, )</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">ydf, xdf</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mshoot.SimScikit.train">
+<code class="descname">train</code><span class="sig-paren">(</span><em>udf</em>, <em>xdf</em>, <em>ydf</em><span class="sig-paren">)</span><a class="headerlink" href="#mshoot.SimScikit.train" title="Permalink to this definition">¶</a></dt>
+<dd><p>Train the model. The model can be retrained any time
+between the simulations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>udf</strong> – DataFrame, shape (n_steps, n_variables)</li>
+<li><strong>xdf</strong> – DataFrame, shape (n_steps, n_states)</li>
+<li><strong>ydf</strong> – DataFrame, shape (n_steps, n_outputs)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="mshoot.html" class="btn btn-neutral" title="MShoot" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Krzysztof Arendt
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

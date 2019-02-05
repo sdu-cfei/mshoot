@@ -1,0 +1,190 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>MPCEmulation &#8212; mshoot 0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="MShoot" href="mshoot.html" />
+    <link rel="prev" title="API documentation" href="../api.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="mpcemulation">
+<span id="id1"></span><h1>MPCEmulation<a class="headerlink" href="#mpcemulation" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="mshoot.MPCEmulation">
+<em class="property">class </em><code class="descclassname">mshoot.</code><code class="descname">MPCEmulation</code><span class="sig-paren">(</span><em>emumod</em>, <em>cfun</em><span class="sig-paren">)</span><a class="headerlink" href="#mshoot.MPCEmulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>MPC emulation is used to test the MPC strategy in a simulated
+environment. Two models are required: (1) control model,
+(2) emulation model.</p>
+<p>The control model is used in the optimization.
+The emulation model is the virtual mock-up of the real system.</p>
+<p>The cost function should return a scalar and have
+the following signature:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cost</span><span class="p">(</span><span class="n">xdf</span><span class="p">,</span> <span class="n">ydf</span><span class="p">):</span>
+    <span class="c1"># user code here</span>
+    <span class="k">return</span> <span class="n">cost</span>
+</pre></div>
+</div>
+<p>where xdf is the state data frame and ydf is the output
+data frame.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>emumod</strong> – SimModel, emulation model</li>
+<li><strong>cfun</strong> – user cost function</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mshoot.MPCEmulation.optimize">
+<code class="descname">optimize</code><span class="sig-paren">(</span><em>model</em>, <em>inp_ctr</em>, <em>inp_emu</em>, <em>free</em>, <em>ubounds</em>, <em>xbounds</em>, <em>x0</em>, <em>ynominal=None</em>, <em>maxiter=50</em>, <em>step=1</em>, <em>horizon=10</em><span class="sig-paren">)</span><a class="headerlink" href="#mshoot.MPCEmulation.optimize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optimize problem using progressive multiple shooting optimizations.</p>
+<p><cite>inp_ctr</cite> and <cite>inp_emu</cite> have to have the same index (control
+and emulation inputs need to be aligned).</p>
+<p>Return:</p>
+<ul class="simple">
+<li>u - DataFrame, optimal free inputs</li>
+<li>xctr - DataFrame, control states</li>
+<li>xemu - DataFrame, emulation states</li>
+<li>yemu - DataFrame, emulation outputs</li>
+<li>uhist - list of DataFrames, optimal free inputs per MPC interval</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>model</strong> – SimModel, control model</li>
+<li><strong>inp_ctr</strong> – DataFrame, fixed inputs for control model, index with time</li>
+<li><strong>inp_emu</strong> – DataFrame, fixed inputs for emulation model, index with time</li>
+<li><strong>free</strong> – list, names of free inputs</li>
+<li><strong>ubounds</strong> – list of tuples of floats, free input bounds</li>
+<li><strong>xbounds</strong> – list of tuples of vectors, state bounds</li>
+<li><strong>x0</strong> – list, initial state</li>
+<li><strong>ynominal</strong> – list, nominal values of outputs (for regularization)</li>
+<li><strong>maxiter</strong> – int, maximum number of iterations (default 50)</li>
+<li><strong>step</strong> – int, MPC re-run step - number of <cite>inp</cite> rows (default 1)</li>
+<li><strong>horizon</strong> – int, opt. horizon - number of <cite>inp</cite> rows (default 10)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">u, xctr, xemu, yemu, uhist</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">mshoot</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">MPCEmulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mshoot.html">MShoot</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../api.html">API documentation</a><ul>
+      <li>Previous: <a href="../api.html" title="previous chapter">API documentation</a></li>
+      <li>Next: <a href="mshoot.html" title="next chapter">MShoot</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Krzysztof Arendt.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/modules/mpc_emulation.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -66,6 +66,7 @@ class SimFMU(SimModel):
         and initial state `x0`.
 
         The DataFrame should have the following content:
+
         - index - time in seconds and equal steps, named 'time',
         - columns - input data,
         - column names - input variable names.

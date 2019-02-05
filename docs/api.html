@@ -1,0 +1,413 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>API documentation &mdash; mshoot 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="MPCEmulation" href="modules/mpcemulation.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> mshoot
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-set-up-mpcemulation">How to set up <cite>MPCEmulation</cite></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-set-up-mshoot">How to set up <cite>MShoot</cite></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#docstrings">Docstrings</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules/mpcemulation.html">MPCEmulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/mshoot.html">MShoot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/interfaces.html">Simulation interfaces</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">mshoot</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>API documentation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="api-documentation">
+<span id="api"></span><h1>API documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h1>
+<p>There are two optimization classes to interact with (<cite>MPCEmulation</cite> and <cite>MShoot</cite>)
+and three simulation interfaces (<cite>SimModel</cite>, <cite>SimFMU</cite>, <cite>SimScikit</cite>).</p>
+<p>The class <cite>MPCEmulation</cite> allows to run a virtual MPC experiment, using chosen
+emulator and control models. The emulator model is a mock-up of a real building.
+The control model is used by the optimization solver to find the optimal control
+trajectory. Each optimization horizon in the MPC loop is automatically optimized using <cite>MShoot</cite>.</p>
+<p>Both, the emulator and control models have to be interfaced via one of the available interfaced
+classes. <cite>SimModel</cite> is the generic interface or wrapper, which can be used to wrap any Python model.
+<cite>SimFMU</cite> is the interface to Functional Mock-up Units. <cite>SimScikit</cite> is the interface to
+scikit-learn models.</p>
+<p>The class <cite>MShoot</cite> allows to run a single optimal control problem (for a single time period),
+using the multiple shooting method. Therefore, only one model is needed, equivalent to the
+control model used in <cite>MPCEmulation</cite>. This class is automatically used in the MPC loop in
+<cite>MPCEmulation</cite>.</p>
+<img alt="_images/architecture.png" src="_images/architecture.png" />
+<div class="section" id="how-to-set-up-mpcemulation">
+<h2>How to set up <cite>MPCEmulation</cite><a class="headerlink" href="#how-to-set-up-mpcemulation" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>Instantiate the emulator model using <cite>SimModel</cite>, <cite>SimFMU</cite>, or <cite>SimScikit</cite>:</li>
+</ol>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">model_emu</span> <span class="o">=</span> <span class="n">mshoot</span><span class="o">.</span><span class="n">SimFMU</span><span class="p">(</span>
+    <span class="n">fmupath</span><span class="p">,</span>
+    <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;qout&#39;</span><span class="p">,</span> <span class="s1">&#39;Tr&#39;</span><span class="p">],</span>
+    <span class="n">states</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;heatCapacitor.T&#39;</span><span class="p">],</span>
+    <span class="n">parameters</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mf">1e6</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">},</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>Instantiate the control model using <cite>SimModel</cite>, <cite>SimFMU</cite>, or <cite>SimScikit</cite></li>
+</ol>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">model_ctr</span> <span class="o">=</span> <span class="n">mshoot</span><span class="o">.</span><span class="n">SimFMU</span><span class="p">(</span>
+    <span class="n">fmupath</span><span class="p">,</span>
+    <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;qout&#39;</span><span class="p">,</span> <span class="s1">&#39;Tr&#39;</span><span class="p">],</span>
+    <span class="n">states</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;heatCapacitor.T&#39;</span><span class="p">],</span>
+    <span class="n">parameters</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mf">1e6</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">},</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li>Define the cost function:</li>
+</ol>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># This function is passed to MPCEmulation</span>
+<span class="k">def</span> <span class="nf">cfun</span><span class="p">(</span><span class="n">xdf</span><span class="p">,</span> <span class="n">ydf</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :param ydf: DataFrame, model states</span>
+<span class="sd">    :param ydf: DataFrame, model outputs</span>
+<span class="sd">    :return: float</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">qout</span> <span class="o">=</span> <span class="n">ydf</span><span class="p">[</span><span class="s1">&#39;qout&#39;</span><span class="p">]</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">qout</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">qout</span><span class="o">.</span><span class="n">size</span>
+    <span class="k">return</span> <span class="n">c</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li>Define control and emulator model inputs. The inputs have to be stored in data frames
+with an equidistant index (named <cite>time</cite>) in seconds. The emulator and input data frames have to be
+aligned with respect to each other (using same index). The time step used in index is
+also used as the simulation time step, and is used as the base unit for defining
+the optimization horizon length. E.g. <code class="docutils literal notranslate"><span class="pre">horizon</span> <span class="pre">=</span> <span class="pre">3</span></code> means that the optimization
+horizon is three time steps long.</li>
+</ol>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Inputs</span>
+<span class="n">tstep</span> <span class="o">=</span> <span class="mf">3600.</span>  <span class="c1"># s</span>
+<span class="n">tend</span> <span class="o">=</span> <span class="mf">3600.</span> <span class="o">*</span> <span class="mi">48</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="n">tend</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tstep</span><span class="p">)</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)</span>
+<span class="n">Tout</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span> <span class="o">/</span> <span class="mf">86400.</span> <span class="o">*</span> <span class="mf">2.</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">+</span> <span class="mf">273.15</span>
+
+<span class="n">inp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="n">index</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">),</span>
+    <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;q&#39;</span><span class="p">,</span> <span class="s1">&#39;Tout&#39;</span><span class="p">],</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">q</span><span class="p">,</span> <span class="n">Tout</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li>Define state bounds (scalars for constant or vectors for time-dependent):</li>
+</ol>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">h</span> <span class="o">=</span> <span class="n">t</span> <span class="o">/</span> <span class="mf">3600.</span>  <span class="c1"># auxiliary variable (time in hours)</span>
+
+<span class="c1"># Lower constraint (time-dependent example)</span>
+<span class="n">Tlo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">h</span> <span class="o">&gt;=</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">h</span> <span class="o">&lt;=</span> <span class="mi">17</span><span class="p">),</span> <span class="mf">21.</span> <span class="o">+</span> <span class="mf">273.15</span><span class="p">,</span> <span class="mf">21.</span> <span class="o">+</span> <span class="mf">273.15</span><span class="p">)</span>
+
+<span class="c1"># Upper constraint (constant example)</span>
+<span class="n">Thi</span> <span class="o">=</span> <span class="mf">297.15</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li>Instantiate <cite>MPCEmulation</cite>:</li>
+</ol>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mpc</span> <span class="o">=</span> <span class="n">mshoot</span><span class="o">.</span><span class="n">MPCEmulation</span><span class="p">(</span><span class="n">model_emu</span><span class="p">,</span> <span class="n">cfun</span><span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li>Optimize:</li>
+</ol>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">u</span><span class="p">,</span> <span class="n">xctr</span><span class="p">,</span> <span class="n">xemu</span><span class="p">,</span> <span class="n">yemu</span><span class="p">,</span> <span class="n">u_hist</span> <span class="o">=</span> <span class="n">mpc</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model_ctr</span><span class="p">,</span>        <span class="c1"># control model instance</span>
+    <span class="n">inp_ctr</span><span class="o">=</span><span class="n">inp</span><span class="p">,</span>            <span class="c1"># control model inputs</span>
+    <span class="n">inp_emu</span><span class="o">=</span><span class="n">inp</span><span class="p">,</span>            <span class="c1"># emulator model inputs</span>
+    <span class="n">free</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;q&#39;</span><span class="p">],</span>             <span class="c1"># control inputs</span>
+    <span class="n">ubounds</span><span class="o">=</span><span class="p">[(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">5000.</span><span class="p">)],</span>  <span class="c1"># control input bounds</span>
+    <span class="n">xbounds</span><span class="o">=</span><span class="p">[(</span><span class="n">Tlo</span><span class="p">,</span> <span class="n">Thi</span><span class="p">)],</span>   <span class="c1"># state constraints</span>
+    <span class="n">x0</span><span class="o">=</span><span class="p">[</span><span class="mf">294.15</span><span class="p">],</span>            <span class="c1"># initial state</span>
+    <span class="n">maxiter</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>             <span class="c1"># max. number of NLP iterations</span>
+    <span class="n">ynominal</span><span class="o">=</span><span class="p">[</span><span class="mf">5000.</span><span class="p">,</span> <span class="mf">20.</span><span class="p">],</span>  <span class="c1"># nominal control model outputs</span>
+    <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>                 <span class="c1"># distance between control horizons</span>
+    <span class="n">horizon</span><span class="o">=</span><span class="mi">3</span>               <span class="c1"># control horizon length</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="how-to-set-up-mshoot">
+<h2>How to set up <cite>MShoot</cite><a class="headerlink" href="#how-to-set-up-mshoot" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>Instantiate the model using <cite>SimModel</cite>, <cite>SimFMU</cite>, or <cite>SimScikit</cite>:</li>
+</ol>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">mshoot</span><span class="o">.</span><span class="n">SimFMU</span><span class="p">(</span>
+    <span class="n">fmupath</span><span class="p">,</span>
+    <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;qout&#39;</span><span class="p">,</span> <span class="s1">&#39;Tr&#39;</span><span class="p">],</span>
+    <span class="n">states</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;heatCapacitor.T&#39;</span><span class="p">],</span>
+    <span class="n">parameters</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mf">1e6</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">},</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>Define the cost function:</li>
+</ol>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cfun</span><span class="p">(</span><span class="n">xdf</span><span class="p">,</span> <span class="n">ydf</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :param ydf: DataFrame, model states</span>
+<span class="sd">    :param ydf: DataFrame, model outputs</span>
+<span class="sd">    :return: float</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">qout</span> <span class="o">=</span> <span class="n">ydf</span><span class="p">[</span><span class="s1">&#39;qout&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">qout</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">qout</span><span class="o">.</span><span class="n">size</span>
+    <span class="k">return</span> <span class="n">c</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li>Define the inputs:</li>
+</ol>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3600</span> <span class="o">*</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">3600</span><span class="p">)</span>
+<span class="n">inp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;q&#39;</span><span class="p">,</span> <span class="s1">&#39;Tout&#39;</span><span class="p">])</span>
+<span class="n">inp</span><span class="p">[</span><span class="s1">&#39;q&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)</span>
+<span class="n">inp</span><span class="p">[</span><span class="s1">&#39;Tout&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="mf">273.15</span><span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li>Define the input and state bounds (scalars for constant or vectors for time-dependent):</li>
+</ol>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ubounds</span> <span class="o">=</span> <span class="p">[(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">4000.</span><span class="p">)]</span>
+<span class="n">xbounds</span> <span class="o">=</span> <span class="p">[(</span><span class="mf">293.15</span><span class="p">,</span> <span class="mf">296.15</span><span class="p">)]</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li>Instantate <cite>MShoot</cite>:</li>
+</ol>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ms</span> <span class="o">=</span> <span class="n">mshoot</span><span class="o">.</span><span class="n">MShoot</span><span class="p">(</span><span class="n">cfun</span><span class="o">=</span><span class="n">cfun</span><span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="6">
+<li>Optimize:</li>
+</ol>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">udf</span><span class="p">,</span> <span class="n">xdf</span> <span class="o">=</span> <span class="n">mpc</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">get_model</span><span class="p">(),</span>
+    <span class="n">inp</span><span class="o">=</span><span class="n">inp</span><span class="p">,</span>
+    <span class="n">free</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;q&#39;</span><span class="p">],</span>
+    <span class="n">ubounds</span><span class="o">=</span><span class="n">ubounds</span><span class="p">,</span>
+    <span class="n">xbounds</span><span class="o">=</span><span class="n">xbounds</span><span class="p">,</span>
+    <span class="n">x0</span><span class="o">=</span><span class="n">x0</span><span class="p">,</span>
+    <span class="n">uguess</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">ynominal</span><span class="o">=</span><span class="p">[</span><span class="mi">4000</span><span class="p">,</span> <span class="mf">295.</span><span class="p">],</span>
+    <span class="n">join</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">maxiter</span><span class="o">=</span><span class="mi">30</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="docstrings">
+<h2>Docstrings<a class="headerlink" href="#docstrings" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules/mpcemulation.html">MPCEmulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/mshoot.html">MShoot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/interfaces.html">Simulation interfaces</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="modules/mpcemulation.html" class="btn btn-neutral float-right" title="MPCEmulation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="installation.html" class="btn btn-neutral" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Krzysztof Arendt
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

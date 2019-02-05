@@ -1,0 +1,470 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>MShoot &mdash; mshoot 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Simulation interfaces" href="interfaces.html" />
+    <link rel="prev" title="MPCEmulation" href="mpcemulation.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> mshoot
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="mpcemulation.html">MPCEmulation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">MShoot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interfaces.html">Simulation interfaces</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">mshoot</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../api.html">API documentation</a> &raquo;</li>
+        
+      <li>MShoot</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/modules/mshoot.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="mshoot">
+<span id="id1"></span><h1>MShoot<a class="headerlink" href="#mshoot" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="mshoot.MShoot">
+<em class="property">class </em><code class="descclassname">mshoot.</code><code class="descname">MShoot</code><span class="sig-paren">(</span><em>cfun</em><span class="sig-paren">)</span><a class="headerlink" href="#mshoot.MShoot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="staticmethod">
+<dt id="mshoot.MShoot.cfun">
+<em class="property">static </em><code class="descname">cfun</code><span class="sig-paren">(</span><em>ux</em>, <em>*args</em><span class="sig-paren">)</span><a class="headerlink" href="#mshoot.MShoot.cfun" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cost function applied to all intervals.</p>
+<p><cite>ux</cite> contains free inputs and adjoint states.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mshoot.MShoot.extend_bounds">
+<code class="descname">extend_bounds</code><span class="sig-paren">(</span><em>bounds</em>, <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#mshoot.MShoot.extend_bounds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unfold scalar bounds to constant vectors.
+All scalar bounds are copied to n-element arrays.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bounds</strong> – list(tuple)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Paran n:</th><td class="field-body">int</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">array, indexing: [variable][lo/up][interval]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="mshoot.MShoot.f_eqcons">
+<em class="property">static </em><code class="descname">f_eqcons</code><span class="sig-paren">(</span><em>ux</em>, <em>*args</em><span class="sig-paren">)</span><a class="headerlink" href="#mshoot.MShoot.f_eqcons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Equality constraints for adjoint variables.
+SLSQP tries to keep all elements of <cite>discont</cite> equal to 0.</p>
+<p><cite>ux</cite> contains free inputs and adjoint states.</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="mshoot.MShoot.jac">
+<em class="property">static </em><code class="descname">jac</code><span class="sig-paren">(</span><em>ux</em>, <em>*args</em><span class="sig-paren">)</span><a class="headerlink" href="#mshoot.MShoot.jac" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate Jacobian of the cost function.</p>
+<p><cite>ux</cite> contains free inputs and adjoint states.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mshoot.MShoot.norm_ubounds">
+<code class="descname">norm_ubounds</code><span class="sig-paren">(</span><em>ubounds</em>, <em>unominal</em><span class="sig-paren">)</span><a class="headerlink" href="#mshoot.MShoot.norm_ubounds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalize bounds formatted as:
+[(lo1, hi1), (lo2, hi2), …, (lon, hin)]</p>
+<p>Return in the same format.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mshoot.MShoot.optimize">
+<code class="descname">optimize</code><span class="sig-paren">(</span><em>model</em>, <em>inp</em>, <em>free</em>, <em>ubounds</em>, <em>xbounds</em>, <em>x0</em>, <em>uguess=None</em>, <em>unominal=None</em>, <em>ynominal=None</em>, <em>join=1</em>, <em>maxiter=50</em><span class="sig-paren">)</span><a class="headerlink" href="#mshoot.MShoot.optimize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiple shooting in which the problem is transcribed
+into a single sparse NLP with adjoint variable continuity
+conditions.</p>
+<p><cite>ubounds</cite> has to be a list of 2-tuples of floats (one tuple
+per free input).</p>
+<p><cite>xbounds</cite> has to be a list of 2-tuples of floats or vectors
+(one tuple per state). Floats are used for constant bounds.
+Vectors can be used to define time-varying bounds. The size
+of a vector must be N+1, where N is the number of rows in <cite>inp</cite>.</p>
+<p><cite>join</cite> can be used to solve on a coarser mesh. By default
+<cite>join</cite> equals to 1, meaning each interval is treated separately.
+On larger problems it may be usefull to merge intervals though
+(less adjoint variables).</p>
+<p>Return a tuple with 2 DataFrames: <cite>udf</cite> with optimized free
+inputs and <cite>xdf</cite> with resulting adjoint states. Note that
+<cite>xdf</cite> has one more row than <cite>udf</cite> (for final state).</p>
+<p>If <cite>x0</cite> doesn’t lie in the feasible region, it will be automatically
+adjusted.</p>
+<p>The shape of <cite>uguess</cite> should be (n_intervals, n_free_inputs).
+The number of intervals equals to <code class="docutils literal notranslate"><span class="pre">inp.index.size</span> <span class="pre">-</span> <span class="pre">1</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>model</strong> – SimModel, control model</li>
+<li><strong>inp</strong> – DataFrame, fixed inputs, index with time</li>
+<li><strong>free</strong> – list, names of free inputs</li>
+<li><strong>ubounds</strong> – list of tuples, free input bounds</li>
+<li><strong>xbounds</strong> – list of tuples, state bounds</li>
+<li><strong>x0</strong> – 1D array, initial state</li>
+<li><strong>uguess</strong> – 2D array, initial guess for free inputs</li>
+<li><strong>ynominal</strong> – list, nominal values of outputs (for regularization)</li>
+<li><strong>join</strong> – int, number of intervals to join (default 1)</li>
+<li><strong>maxiter</strong> – int, maximum number of iterations (default 50)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">udf, xdf (two DataFrames with optimized inputs and states)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mshoot.MShoot.slice_bounds">
+<code class="descname">slice_bounds</code><span class="sig-paren">(</span><em>bounds</em>, <em>nrows</em><span class="sig-paren">)</span><a class="headerlink" href="#mshoot.MShoot.slice_bounds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Slice <cite>bounds</cite> into <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">steps</span> <span class="pre">//</span> <span class="pre">(nrows-1)</span></code> parts.</p>
+<p>Each bound must be given as a tuple of vectors. Each vector element
+represents the bound for a specific time.</p>
+<p>Return:</p>
+<blockquote>
+<div>list(list(tuple(float, float)))
+|    |    |     ^ lo.  ^ up. bound
+|    |    ^ variable
+|    ^ period
+^ list of periods</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>bounds</strong> – list(tuple(vector, vector))</li>
+<li><strong>nrows</strong> – int</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list(list(tuple(float, float)))</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mshoot.MShoot.slice_inputs">
+<code class="descname">slice_inputs</code><span class="sig-paren">(</span><em>inp</em>, <em>nrows</em><span class="sig-paren">)</span><a class="headerlink" href="#mshoot.MShoot.slice_inputs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Slice <cite>inp</cite> into even adjacent parts with <cite>nrows</cite> each.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>inp</strong> – DataFrame</li>
+<li><strong>nrows</strong> – int</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of DataFrames</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mshoot.MShoot.test_input">
+<code class="descname">test_input</code><span class="sig-paren">(</span><em>u</em>, <em>unames</em>, <em>model</em>, <em>inp</em>, <em>x0</em><span class="sig-paren">)</span><a class="headerlink" href="#mshoot.MShoot.test_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test input <cite>u</cite>. <cite>u</cite> is assumed to be time-varying, but is
+given as a flattened array (vector) of length:
+<code class="docutils literal notranslate"><span class="pre">len(unames)</span> <span class="pre">*</span> <span class="pre">inp.index.size</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>u</strong> – vector, flattened inputs</li>
+<li><strong>unames</strong> – list(str)</li>
+<li><strong>model</strong> – SimModel</li>
+<li><strong>inp</strong> – DataFrame</li>
+<li><strong>x0</strong> – vector</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">ydf (DataFrame), xdf (DataFrame)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mshoot.MShoot.test_input_const">
+<code class="descname">test_input_const</code><span class="sig-paren">(</span><em>u</em>, <em>unames</em>, <em>model</em>, <em>inp</em>, <em>x0</em><span class="sig-paren">)</span><a class="headerlink" href="#mshoot.MShoot.test_input_const" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test input <cite>u</cite>. <cite>u</cite> is assumed to be constant, so must
+be given as a 1D array (vector) of length <code class="docutils literal notranslate"><span class="pre">len(unames)</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>u</strong> – vector, constant inputs</li>
+<li><strong>unames</strong> – list(str)</li>
+<li><strong>model</strong> – SimModel</li>
+<li><strong>inp</strong> – DataFrame</li>
+<li><strong>x0</strong> – vector</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">ydf (DataFrame), xdf (DataFrame)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mshoot.MShoot.trim_to_bounds">
+<code class="descname">trim_to_bounds</code><span class="sig-paren">(</span><em>xt</em>, <em>bounds</em><span class="sig-paren">)</span><a class="headerlink" href="#mshoot.MShoot.trim_to_bounds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns xt if lies within bounds, otherwise returns
+the nearest bound.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>xt</strong> – vector, state at time t</li>
+<li><strong>bounds</strong> – list(tuple), bounds for each state</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">vector</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mshoot.MShoot.x0_within_bounds">
+<code class="descname">x0_within_bounds</code><span class="sig-paren">(</span><em>x0</em>, <em>bounds</em><span class="sig-paren">)</span><a class="headerlink" href="#mshoot.MShoot.x0_within_bounds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a tuple of two tuples, each containing
+one bool per state. The booleans are True
+is respective bounds are not violated.</p>
+<p>The first tuple refers to the lower bound.
+The second tuple refers to the upper bound.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>xt</strong> – vector, state at time t</li>
+<li><strong>bounds</strong> – list(tuple), bounds for each state</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">tuple(tuple(bool, …), tuple(bool, …))</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="interfaces.html" class="btn btn-neutral float-right" title="Simulation interfaces" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="mpcemulation.html" class="btn btn-neutral" title="MPCEmulation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Krzysztof Arendt
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
