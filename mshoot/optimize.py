@@ -1,21 +1,5 @@
-# opt, fx, its, imode, smode = fmin_slsqp(
-#     func=MShoot.cfun,
-#     x0=ux,
-#     bounds=uxbounds,
-#     f_eqcons=MShoot.f_eqcons,
-#     args=(self, n_interv, free, n_free, model, slinp,
-#             shape_u, shape_xadj, x0, n_states,
-#             unominal, ynominal),
-#     iprint=2,
-#     acc=1e-6,
-#     iter=maxiter,
-#     full_output=True,
-#     epsilon=1e-9
-# )
-
 import numpy as np
 import scipy.optimize
-import numdifftools as nd
 
 def optimize(func, x0, jac, bounds, f_eqcons, args, iter, solver='SLSQP'):
     """
@@ -86,16 +70,9 @@ def optimize(func, x0, jac, bounds, f_eqcons, args, iter, solver='SLSQP'):
 
         return out, fx, its, imode, smode
 
-    elif solver == 'FALLBACK':
-
-        res = scipy.optimize.minimize(
-            fun=fallback_cost,
-            jac=jac,
-            x0=x0,
-            args=args,
-            method='SLSQP',
-            bounds=bounds
-        )
+    else:
+        print("Unknown solver")  # TODO: log
+        raise KeyError("Unknown solver")
 
     # Return ========================================================
     return out, fx, its, imode, smode

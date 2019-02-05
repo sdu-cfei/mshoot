@@ -1,13 +1,13 @@
 from setuptools import setup
 
 with open("README.md", "r") as fh:
-    long_description = fh.read()
+    long_description = fh.read()  # TODO: Images might not work on PyPi
 
 setup(name='mshoot',
       version='0.0.2dev',
       description='Multiple shooting dynamic optimization',
       long_description=long_description,
-      url='https://github.com/sdu-cfei/mshoot',  # TODO: Not there yet...
+      url='https://github.com/sdu-cfei/mshoot',
       keywords='multiple shooting dynamic optimization',
       author='Krzysztof Arendt',
       author_email='krzysztof.arendt@gmail.com',
@@ -19,11 +19,12 @@ setup(name='mshoot',
       ],
       include_package_data=True,
       install_requires=[
-          'numpy',
-          'matplotlib',
-          'scipy',
-          'pandas',
-          'dask',
+        'numpy',
+        'pandas',
+        'scipy',
+        'matplotlib',
+        'scikit-learn',
+        'pyfmi'
       ],
       classifiers = [
           'Programming Language :: Python :: 3',
