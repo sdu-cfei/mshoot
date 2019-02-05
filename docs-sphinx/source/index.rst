@@ -18,7 +18,7 @@ and state continuity constraints (:math:`x_{N-1}^R = x_{N}^L`).
 .. image:: gfx/multiple_shooting.png
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
    installation
