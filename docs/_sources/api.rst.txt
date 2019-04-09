@@ -98,13 +98,13 @@ How to set up `MPCEmulation`
     # Upper constraint (constant example)
     Thi = 297.15
 
-5. Instantiate `MPCEmulation`:
+6. Instantiate `MPCEmulation`:
 
 .. code::
 
     mpc = mshoot.MPCEmulation(model_emu, cfun)
 
-5. Optimize:
+7. Optimize:
 
 .. code::
 
