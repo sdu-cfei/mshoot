@@ -15,7 +15,7 @@ build/
 status
 success
 volta/
-.mat
+*.mat
 
 # Scripts fetching data from SDU's internal databases
 fetch_from_volta.py
