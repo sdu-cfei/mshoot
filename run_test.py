@@ -17,6 +17,7 @@ def suite():
     suite.addTest(TestFMI('test_simulation'))
     suite.addTest(TestFMI('test_optimal_control'))
     suite.addTest(TestMPC('test_mpc'))
+    suite.addTest(TestMPC('test_mpc_inp_clb'))
     return suite
 
 

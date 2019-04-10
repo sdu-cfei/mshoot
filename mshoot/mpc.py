@@ -45,12 +45,23 @@ class MPCEmulation():
 
     def optimize(self, model, inp_ctr, inp_emu, free, ubounds, xbounds,
                  x0, ynominal=None, maxiter=50,
-                 step=1, horizon=10):
+                 step=1, horizon=10, inp_clb=None):
         """
         Optimize problem using progressive multiple shooting optimizations.
 
         `inp_ctr` and `inp_emu` have to have the same index (control
         and emulation inputs need to be aligned).
+
+        If `inp_clb` is provided with a callback function, then it overrides
+        `inp_ctr`. The function can be used to provide new inputs for each
+        receding horizon, emulating in example new weather/occupancy forecasts.
+        The callback function takes only one argument `index`, which is a numpy
+        1D array with time steps for which the inputs have to be provided,
+        e.g. if `index = [300, 600, 900, 1200]` is passed to the function,
+        it should return a data frame with index `[300, 600, 900, 1200]`
+        and columns for all input variables. Since `inp_ctr` is a required argument,
+        for clarity it is advised to set it to `None` in cases when `inp_clb` is provided.
+        See the example `examples/mpc_fmi_6.py` for how to use `inp_clb`.
 
         Return:
 
@@ -71,6 +82,7 @@ class MPCEmulation():
         :param maxiter: int, maximum number of iterations (default 50)
         :param step: int, MPC re-run step - number of `inp` rows (default 1)
         :param horizon: int, opt. horizon - number of `inp` rows (default 10)
+        :param inp_clb: callback function, see description
         :return: u, xctr, xemu, yemu, uhist
         """
         self.log.info("**Start MPC optimization**")
@@ -83,6 +95,13 @@ class MPCEmulation():
 
         # Make sure x0 is ndarray
         x0 = np.array(x0).astype(float)
+
+        # Initialize inp_ctr from callback, if provided.
+        # Initialization based on inp_emu. In each MPC loop
+        # pass, a portion of the inp_ctr will be
+        # overwritten by the callback function.
+        if inp_clb is not None:
+            inp_ctr = inp_emu.copy()
 
         # Assert index type is int
         inp_ctr.index = inp_ctr.index.astype(int)
@@ -130,6 +149,20 @@ class MPCEmulation():
             # Define inputs for next period
             nxt_inp_ctr = inp_ctr.iloc[i:i+horizon+1].copy()
             nxt_inp_emu = inp_emu.iloc[i:i+horizon+1].copy()
+
+            # Overwrite control inputs using the callback function (if provided)
+            if inp_clb is not None:
+                index = inp_ctr.index[i:i+horizon+1]
+
+                self.log.debug(
+                    'Using inp_clb for getting new inputs. index = {}'.format(index)
+                )
+
+                nxt_inp_ctr = inp_clb(index=index)
+
+                assert np.isclose(nxt_inp_ctr.index.values, index.values).all(), \
+                    'Index of the dataframe returned by' + \
+                    ' inp_clb not consistent with emulation input dataframe'
 
             nxt_xbounds = [
                 (b[0][i:i+horizon+1], b[1][i:i+horizon+1]) for b in xbounds
