@@ -24,7 +24,7 @@ to be installed via pip. In the below procedure it is assumed that you already h
 1. Create a new environment: ``conda create --name mshoot python=3.6``
 2. Activate the environment: ``conda activate mshoot``
 3. Install dependencies from your default channel: ``conda install numpy pandas scipy matplotlib scikit-learn``
-4. Install pyfmi from conda-forge: ``conda install -c conda-forge pyfmi``
+4. Install `pyfmi` from conda-forge: ``conda install -c conda-forge pyfmi``
 5. Clone `mshoot` repository: ``git clone https://github.com/sdu-cfei/mshoot.git mshoot``
 6. Switch directory: ``cd mshoot``
 7. Install `mshoot`: ``pip install -e .``

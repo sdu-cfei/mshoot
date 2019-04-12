@@ -193,10 +193,20 @@ data frame.</p>
 </table>
 <dl class="method">
 <dt id="mshoot.MPCEmulation.optimize">
-<code class="descname">optimize</code><span class="sig-paren">(</span><em>model</em>, <em>inp_ctr</em>, <em>inp_emu</em>, <em>free</em>, <em>ubounds</em>, <em>xbounds</em>, <em>x0</em>, <em>ynominal=None</em>, <em>maxiter=50</em>, <em>step=1</em>, <em>horizon=10</em><span class="sig-paren">)</span><a class="headerlink" href="#mshoot.MPCEmulation.optimize" title="Permalink to this definition">¶</a></dt>
+<code class="descname">optimize</code><span class="sig-paren">(</span><em>model</em>, <em>inp_ctr</em>, <em>inp_emu</em>, <em>free</em>, <em>ubounds</em>, <em>xbounds</em>, <em>x0</em>, <em>ynominal=None</em>, <em>maxiter=50</em>, <em>step=1</em>, <em>horizon=10</em>, <em>inp_clb=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mshoot.MPCEmulation.optimize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Optimize problem using progressive multiple shooting optimizations.</p>
 <p><cite>inp_ctr</cite> and <cite>inp_emu</cite> have to have the same index (control
 and emulation inputs need to be aligned).</p>
+<p>If <cite>inp_clb</cite> is provided with a callback function, then it overrides
+<cite>inp_ctr</cite>. The function can be used to provide new inputs for each
+receding horizon, emulating in example new weather/occupancy forecasts.
+The callback function takes only one argument <cite>index</cite>, which is a numpy
+1D array with time steps for which the inputs have to be provided,
+e.g. if <cite>index = [300, 600, 900, 1200]</cite> is passed to the function,
+it should return a data frame with index <cite>[300, 600, 900, 1200]</cite>
+and columns for all input variables. Since <cite>inp_ctr</cite> is a required argument,
+for clarity it is advised to set it to <cite>None</cite> in cases when <cite>inp_clb</cite> is provided.
+See the example <cite>examples/mpc_fmi_6.py</cite> for how to use <cite>inp_clb</cite>.</p>
 <p>Return:</p>
 <ul class="simple">
 <li>u - DataFrame, optimal free inputs</li>
@@ -221,6 +231,7 @@ and emulation inputs need to be aligned).</p>
 <li><strong>maxiter</strong> – int, maximum number of iterations (default 50)</li>
 <li><strong>step</strong> – int, MPC re-run step - number of <cite>inp</cite> rows (default 1)</li>
 <li><strong>horizon</strong> – int, opt. horizon - number of <cite>inp</cite> rows (default 10)</li>
+<li><strong>inp_clb</strong> – callback function, see description</li>
 </ul>
 </td>
 </tr>
